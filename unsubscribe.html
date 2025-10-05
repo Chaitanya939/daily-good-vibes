@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsubscribe - Daily Good Vibes</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .unsubscribe-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .unsubscribe-container h1 {
+            color: #1a535c;
+            margin-bottom: 1rem;
+        }
+        .unsubscribe-container p {
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565, #c53030);
+            color: white;
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #333;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .message {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .success {
+            background: #c6f6d5;
+            border: 2px solid #48bb78;
+            color: #22543d;
+        }
+        .error {
+            background: #fed7d7;
+            border: 2px solid #f56565;
+            color: #742a2a;
+        }
+        .loading {
+            display: none;
+            margin-top: 2rem;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4ecdc4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="unsubscribe-container">
+        <h1>Unsubscribe from Daily Good Vibes</h1>
+        
+        <div id="confirmSection">
+            <p>We're sorry to see you go! 😢</p>
+            <p>Are you sure you want to unsubscribe from our daily newsletter?</p>
+            <button id="unsubscribeBtn" class="btn btn-danger">Yes, Unsubscribe</button>
+            <a href="index.html" class="btn btn-secondary">No, Keep Me Subscribed</a>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+
+        <div id="message" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Supabase configuration - REPLACE WITH YOUR VALUES
+        const SUPABASE_URL = 'https://bailbskrujksalxwnehh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhaWxic2tydWprc2FseHduZWhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk2ODgyODQsImV4cCI6MjA3NTI2NDI4NH0.gGi4rCMYNI1LqEJplZdVSI7gxc_wa0zxSv-5GeUtqWQ';
+
+        let supabase;
+
+        // Load Supabase library
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+            script.onload = function() {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            };
+            document.head.appendChild(script);
+        })();
+
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        const unsubscribeBtn = document.getElementById('unsubscribeBtn');
+        const confirmSection = document.getElementById('confirmSection');
+        const loadingSection = document.getElementById('loading');
+        const messageDiv = document.getElementById('message');
+
+        // If no token, show error
+        if (!token) {
+            confirmSection.style.display = 'none';
+            messageDiv.innerHTML = '<div class="error">Invalid unsubscribe link. Please use the link from your newsletter email.</div>';
+            messageDiv.style.display = 'block';
+        }
+
+        // Handle unsubscribe
+        unsubscribeBtn.addEventListener('click', async () => {
+            confirmSection.style.display = 'none';
+            loadingSection.style.display = 'block';
+
+            try {
+                if (!supabase) {
+                    throw new Error('Database connection not ready');
+                }
+
+                // Update subscriber status
+                const { data, error } = await supabase
+                    .from('subscribers')
+                    .update({ is_active: false })
+                    .eq('unsubscribe_token', token)
+                    .eq('is_active', true);
+
+                if (error) throw error;
+
+                // Success
+                loadingSection.style.display = 'none';
+                messageDiv.innerHTML = `
+                    <div class="success">
+                        <h2>✓ Successfully Unsubscribed</h2>
+                        <p>You've been removed from our mailing list. You won't receive any more newsletters from us.</p>
+                        <p>Changed your mind? <a href="index.html">Subscribe again</a></p>
+                    </div>
+                `;
+                messageDiv.style.display = 'block';
+
+            } catch (error) {
+                console.error('Unsubscribe error:', error);
+                loadingSection.style.display = 'none';
+                messageDiv.innerHTML = `
+                    <div class="error">
+                        <h2>Error</h2>
+                        <p>Something went wrong. Please try again or contact support.</p>
+                        <a href="index.html" class="btn btn-secondary">Back to Home</a>
+                    </div>
+                `;
+                messageDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
