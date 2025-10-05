@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #ffffff;
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(26, 83, 92, 0.9), rgba(78, 205, 196, 0.85)),
+                url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80') center/cover fixed;
+    background-blend-mode: overlay;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tagline {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.95;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.feature {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.feature h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature p {
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
+.subscribe-box {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2.5rem;
+    border-radius: 15px;
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.subscribe-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+#subscribeForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto 1rem;
+}
+
+#emailInput {
+    padding: 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+}
+
+#emailInput:focus {
+    outline: 3px solid rgba(78, 205, 196, 0.6);
+}
+
+#subscribeBtn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4ECDC4, #44A08D);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#subscribeBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+#subscribeBtn:active {
+    transform: translateY(0);
+}
+
+#subscribeBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.disclaimer {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-top: 1rem;
+}
+
+.disclaimer a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    display: none;
+}
+
+.message.success {
+    background: rgba(72, 187, 120, 0.3);
+    border: 2px solid #48bb78;
+    display: block;
+}
+
+.message.error {
+    background: rgba(245, 101, 101, 0.3);
+    border: 2px solid #f56565;
+    display: block;
+}
+
+.sample-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+
+.sample-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.sample-section ul {
+    list-style: none;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.sample-section li {
+    padding: 0.8rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sample-section li:last-child {
+    border-bottom: none;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .tagline {
+        font-size: 1rem;
+    }
+
+    .content {
+        padding: 2rem 1.5rem;
+    }
+
+    .subscribe-box {
+        padding: 1.5rem;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+}
