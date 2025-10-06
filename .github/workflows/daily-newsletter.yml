@@ -1,0 +1,47 @@
+name: Send Daily Newsletter
+
+on:
+  schedule:
+    # Runs at 7:00 AM ET (11:00 AM UTC during standard time, 12:00 PM UTC during daylight saving)
+    # Using 11:00 UTC to cover EST (winter)
+    - cron: '0 11 * * *'
+  
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm ci
+      
+      - name: Send newsletter
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          WEBSITE_URL: ${{ secrets.WEBSITE_URL }}
+        run: |
+          cd backend
+          npm run send
+      
+      - name: Send notification on failure
+        if: failure()
+        run: |
+          echo "Newsletter sending failed at $(date)"
+          echo "Check the logs above for details"

@@ -1,0 +1,21 @@
+{
+  "name": "daily-good-vibes-backend",
+  "version": "1.0.0",
+  "description": "Backend for Daily Good Vibes newsletter",
+  "main": "send-newsletter.js",
+  "type": "module",
+  "scripts": {
+    "send": "node send-newsletter.js",
+    "test": "node send-newsletter.js --test"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "resend": "^3.0.0",
+    "@anthropic-ai/sdk": "^0.27.0",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
